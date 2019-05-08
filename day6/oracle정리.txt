@@ -1,0 +1,31 @@
+새로운 유저 생성하기
+create user 유저이름 identified by 비밀번호;
+
+유저이름에게 접속권한, 테이블 권한 그리고 시퀀스 권한까지 부여하기
+grant create session, create table, create sequence to 유저이름;
+
+유저이름으로 접속
+conn 유저이름/비밀번호;
+ 
+테이블명 'member'로 테이블 만들기
+create table sequence seq_member
+increament by 1
+start with 1;
+
+create table member(
+member_id number primary key
+,id varchar2(50) unique
+,name varchar(20) not null
+,age number default 20
+,regdate date default sysdate
+);
+
+3명을 insert 하기
+insert into member(member_id,id,name)
+values(seq_member.nextval,'batman','brown');
+
+insert into member(member_id,id,name)
+values(seq_member.nextval,'superman','peter'');
+
+insert into member(member_id,id,name)
+values(seq_member.nextval,'spiderman','paul');

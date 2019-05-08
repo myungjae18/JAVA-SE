@@ -1,0 +1,127 @@
+package messenger.server;
+
+import java.awt.BorderLayout;
+import java.awt.Font;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.io.IOException;
+import java.net.ServerSocket;
+import java.net.Socket;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.SQLException;
+import java.util.Vector;
+
+import javax.swing.JButton;
+import javax.swing.JFrame;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JTextArea;
+
+import messenger.db.ConnectionManager;
+
+
+
+public class MultiServer extends JFrame {
+	JPanel p_north;
+	JButton bt;
+	JTextArea area;
+	JScrollPane scroll;
+
+	ServerSocket server;
+	int port = 8888;
+
+	Thread serverThread;
+
+	Vector<ServerThread> list=new Vector<ServerThread>();
+	
+	ConnectionManager conM;
+	
+	public MultiServer() {
+		p_north = new JPanel();
+		bt = new JButton("서버가동");
+		area = new JTextArea();
+		scroll = new JScrollPane(area);
+		conM = new ConnectionManager();
+		
+		// 쓰레드 생성 및 재정의!!
+		serverThread = new Thread() {
+			@Override
+			public void run() {
+				runServer();
+			}
+		};
+		p_north.add(bt);
+		this.add(scroll);
+		this.add(p_north, BorderLayout.NORTH);
+
+		area.setFont(new Font("돋음", Font.BOLD, 15));
+
+		bt.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				// 서버 가동
+				serverThread.start();
+				//접속하기
+				getConnection();
+			}
+		});
+		
+		this.setSize(400, 500);
+		this.setVisible(true);
+		this.setDefaultCloseOperation(EXIT_ON_CLOSE);
+	}
+	
+	//접속 객체를 반환하는 메서드
+	public Connection getConnection() {
+		Connection con=null;
+		try {
+			Class.forName(conM.getDriver());
+			con=DriverManager.getConnection(conM.getUrl(), conM.getUser(), conM.getPassword());
+			if(con==null) {
+				System.out.println("접속 실패");
+			}else {
+				System.out.println("접속 성공");
+			}
+		} catch (ClassNotFoundException e) {
+			e.printStackTrace();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		
+		return con;
+	}
+	public void disconnect(Connection con) {//사용된 커넥션 끊기
+		if(con != null) {
+			try {
+				con.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+	}
+	
+	
+
+	public void runServer() {
+		try {
+			server = new ServerSocket(port);
+			area.append("서버 객체 생성\n");
+
+			while (true) {
+				Socket client = server.accept();
+				String ip = client.getInetAddress().getHostAddress();
+				area.append(ip + " 님 접속\n");
+				ServerThread st=new ServerThread(this, client);
+				st.start();
+				list.add(st);
+				area.append("현재"+list.size()+"명 접속중");
+			}
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+
+	public static void main(String[] args) {
+		new MultiServer();
+	}
+}

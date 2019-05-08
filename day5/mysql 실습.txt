@@ -1,0 +1,50 @@
+mysql
+
+mariadb - mysql의 개발자와 같은 엔진으로 제작했기에 mysql과 기능이 동일함...
+.tar =renux 계열..
+--------------------------------------------------------------------------------------
+DDL 정의어 (생성, 제거, 변경)
+-create, drop, alter
+DML 조작어 (레코드 제어)
+-insert, delete, update
+-select 조회
+DCL 제어어 (권한)
+--------------------------------------------------------------------------------------
+<테이블 만들기>
+create table student(
+name varchar(30)
+,age int
+,addr varchar(100)
+,gender char(2)
+)default character set utf8;
+--------------------------------------------------------------------------------------
+테이블에 입력되는 데이터의 무결성을 보장하는 법
+->각종 까다로운 제약 사항을 조건으로 안전장치 마련
+->무결성을 보장하기 위해 컬럼에 각종 제한을 가할 수 있는 조건을 가리켜 제약 조건이라 
+한다...
+제약조건의 종류 :
+primary key
+unique
+not null
+default
+foreign key...
+---------------------------------------------------------------------------------------
+create table student(
+student_id int primary key auto_increment
+,name varchar(20) unique not null
+,age int
+,regdate timestamp default now()
+)default character set utf8;
+---------------------------------------------------------------------------------------
+1.primary key(=unique not null)란
+1)중복을 허용하지 않고
+2)null을 허용하지 않는 제약 조건
+
+2.unique란
+1)중복을 허용하지 않고
+2)null은 허용하는 제약 조건...
+
+3.not null이란
+null을 허용하지 않는 제약 조건
+4.default란
+기본값을 지정할 수 있는 제약 조건...(날짜 등을 자동으로 프로그램이 지정)...

@@ -1,0 +1,71 @@
+package p0121.network;
+
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
+import java.net.Socket;
+
+/*
+접속한 클라이언트 간 서로 독립적으로 메세지를 주고 받으려면
+하나의 프로그램 내에서 독립적으로 수행 가능한 실행 단위인 쓰레드가 필요하다
+*/
+/*
+이 클래스는 접속하는 클라이언트마다 1ㄷ1 대응하여 대화를 나눌 아바타와 같다.
+따라서 대화에 필요한 재료인 스트림을 보유해야 하고 이 스트림은 접속과 함꼐 생성되는 소켓으로부터 얻어와야
+하기 때문에 소켓도 보유해야 한다..
+ */
+public class ServerThread extends Thread{
+	MultiServer multiServer;
+	
+	Socket client;
+	BufferedReader buffr;
+	BufferedWriter buffw;
+	boolean flag=true;
+	
+	public ServerThread(MultiServer multiServer, Socket client) {
+		this.multiServer=multiServer;
+		this.client=client;
+		
+		try {
+			buffr=new BufferedReader(new InputStreamReader(client.getInputStream()));
+			buffw=new BufferedWriter(new OutputStreamWriter(client.getOutputStream()));
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+	//청취
+	public void listen() {
+		try {
+			String msg=buffr.readLine();
+			
+			//서버에 접속한 모든 아바타의 send를 호출
+			for (int i = 0; i < multiServer.list.size(); i++) {
+				ServerThread st=multiServer.list.get(i);
+				st.send(msg); //클라이언트에 전송
+			}
+			multiServer.area.append(msg+"\n"); //기록 남기기
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			System.out.println("야 새꺄 사람 나갔다");
+		}
+	}
+	//전달
+	public void send(String msg) {
+		try {
+			buffw.write(msg+"\n");
+			buffw.flush();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+	public void run() {
+		while(flag) {
+			listen();
+		}
+	}
+}

@@ -1,0 +1,23 @@
+package messenger.mainframe;
+
+import java.awt.Dimension;
+
+import javax.swing.JFrame;
+
+import messenger.login.Login;
+
+public class Main extends JFrame{
+	Login login;
+	public Main() {
+		login=new Login();
+		
+		add(login);
+		
+		setSize(500, 800);
+		setVisible(true);
+		setDefaultCloseOperation(EXIT_ON_CLOSE);
+	}
+	public static void main(String[] args) {
+		new Main();
+	}
+}

@@ -1,0 +1,18 @@
+package messenger.addfriend;
+
+import java.awt.Color;
+import java.awt.Dimension;
+
+import javax.swing.JPanel;
+
+public class AddFriendMain extends JPanel{
+
+	
+	public AddFriendMain() {
+
+		
+		setBackground(Color.red);
+		setPreferredSize(new Dimension(500, 660));
+
+	}
+}

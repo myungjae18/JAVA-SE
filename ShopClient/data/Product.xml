@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<products>
+	<product>
+		<name>딸기 우유</name>
+		<brand>매일 유업</brand>
+		<price>1,200원</price>
+	</product>
+	<product>
+		<name>바나나 우유</name>
+		<brand>서울 우유</brand>
+		<price>1,400원</price>
+	</product>
+	<product>
+		<name>초코 우유</name>
+		<brand>서울 우유</brand>
+		<price>1,200원</price>
+	</product>
+</products>

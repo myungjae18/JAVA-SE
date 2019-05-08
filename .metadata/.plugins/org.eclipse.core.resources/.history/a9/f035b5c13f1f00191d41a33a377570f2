@@ -1,0 +1,178 @@
+package messenger.regist;
+import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.FlowLayout;
+import java.awt.Font;
+
+import javax.swing.JButton;
+import javax.swing.JFrame;
+import javax.swing.JPanel;
+import javax.swing.JTextField;
+import javax.swing.border.Border;
+
+public class Regist extends JFrame{
+	JPanel p_base, p_north, p_south, p_name, p_idArea, p_pw, p_nickName, p_age, p_email; //영역 구분용 패널
+	JTextField n_name, n_id, n_pw, n_nickName, n_age, n_email; //각 입력창의 설명 텍스트
+	JTextField t_name, t_id, t_pw, t_nickName, t_age, t_email; //각 텍스트 입력 창
+	JButton bt_check, bt_regist; //아이디 중복 확인 버튼과 가입 버튼
+	
+	public Regist() {
+		p_base=new JPanel(); //패널 전체를 감싸는 패널
+		p_north=new JPanel(); //버튼 부분 외의 모든 것을 담는 패널
+		p_south=new JPanel(); //버튼 부분을 담는 패널
+		p_name=new JPanel();
+		p_idArea=new JPanel();
+		p_pw=new JPanel();
+		p_nickName=new JPanel();
+		p_age=new JPanel();
+		p_email=new JPanel();
+		//-------------------------------------
+		n_name=new JTextField(4) {
+			public void setBorder(Border border) {}
+		};
+		n_id=new JTextField(4) {
+			public void setBorder(Border border) {}
+		};
+		n_pw=new JTextField(4) {
+			public void setBorder(Border border) {}
+		};
+		n_nickName=new JTextField(4) {
+			public void setBorder(Border border) {}
+		};
+		n_age=new JTextField(4) {
+			public void setBorder(Border border) {}
+		};
+		n_email=new JTextField(4) {
+			public void setBorder(Border border) {}
+		};
+		//-------------------------------------
+		t_name=new JTextField(15);
+		t_id=new JTextField(15);
+		t_pw=new JTextField(15);
+		t_nickName=new JTextField(15);
+		t_age=new JTextField(15);
+		t_email=new JTextField(15);
+		//-------------------------------------
+		bt_check=new JButton("중복 확인");
+		bt_regist=new JButton("가입");
+		
+		/*<텍스트 관련 설정>*/
+		n_name.setFont(new Font("", Font.BOLD, 20));
+		n_name.setSelectedTextColor(Color.WHITE);
+		n_name.setEditable(false);
+		n_name.setBackground(Color.GRAY);
+		n_name.setSize(30, 30);
+		n_name.setText("이름");
+		//-------------------------------------
+		n_id.setFont(new Font("", Font.BOLD, 20));
+		n_id.setEditable(false);
+		n_id.setBackground(Color.GRAY);
+		n_id.setSize(30, 30);
+		n_id.setText("id");
+		//-------------------------------------
+		n_pw.setFont(new Font("", Font.BOLD, 20));
+		n_pw.setEditable(false);
+		n_pw.setBackground(Color.GRAY);
+		n_pw.setSize(30, 30);
+		n_pw.setText("pw");
+		//-------------------------------------
+		n_nickName.setFont(new Font("", Font.BOLD, 20));
+		n_nickName.setEditable(false);
+		n_nickName.setBackground(Color.GRAY);
+		n_nickName.setSize(30, 30);
+		n_nickName.setText("닉네임");
+		//-------------------------------------
+		n_age.setFont(new Font("", Font.BOLD, 20));
+		n_age.setEditable(false);
+		n_age.setBackground(Color.GRAY);
+		n_age.setSize(30, 30);
+		n_age.setText("나이");
+		//-------------------------------------
+		n_email.setFont(new Font("", Font.BOLD, 20));
+		n_email.setEditable(false);
+		n_email.setBackground(Color.GRAY);
+		n_email.setSize(30, 30);
+		n_email.setText("이메일");
+		//-------------------------------------
+		t_name.setFont(new Font(null, Font.PLAIN, 20));
+		t_id.setFont(new Font(null, Font.PLAIN, 20));
+		t_pw.setFont(new Font(null, Font.PLAIN, 20));
+		t_nickName.setFont(new Font(null, Font.PLAIN, 20));
+		t_age.setFont(new Font(null, Font.PLAIN, 20));
+		t_email.setFont(new Font(null, Font.PLAIN, 20));
+		
+		/*<내부 패널들 관련 설정>*/
+		p_base.setLayout(new FlowLayout());
+		p_base.setBackground(Color.GRAY);
+		p_base.setPreferredSize(new Dimension(500, 1000));
+		p_base.add(p_north);
+		p_base.add(p_south, BorderLayout.SOUTH);
+		//-------------------------------------
+		p_north.setLayout(new FlowLayout());
+		p_north.setPreferredSize(new Dimension(500, 900));
+		p_north.add(p_name);
+		p_north.add(p_idArea);
+		p_north.add(p_pw);
+		p_north.add(p_nickName);
+		p_north.add(p_age);
+		p_north.add(p_email);
+		p_north.setBackground(Color.GRAY);
+		//-------------------------------------
+		Dimension d=new Dimension(500, 70);
+		//-------------------------------------
+		p_name.setLayout(new FlowLayout());
+		p_name.setBackground(Color.GRAY);
+		p_name.setPreferredSize(d);
+		p_name.add(n_name, BorderLayout.WEST);
+		p_name.add(t_name);
+		//-------------------------------------
+		p_idArea.setLayout(new FlowLayout());
+		p_idArea.setBackground(Color.GRAY);
+		p_idArea.setPreferredSize(d);
+		p_idArea.add(n_id);
+		p_idArea.add(t_id);
+		p_idArea.add(bt_check);
+		//-------------------------------------
+		p_pw.setLayout(new FlowLayout());
+		p_pw.setBackground(Color.GRAY);
+		p_pw.setPreferredSize(d);
+		p_pw.add(n_pw);
+		p_pw.add(t_pw);
+		//-------------------------------------
+		p_nickName.setLayout(new FlowLayout());
+		p_nickName.setBackground(Color.GRAY);
+		p_nickName.setPreferredSize(d);
+		p_nickName.add(n_nickName);
+		p_nickName.add(t_nickName);
+		//-------------------------------------
+		p_age.setLayout(new FlowLayout());
+		p_age.setBackground(Color.GRAY);
+		p_age.setPreferredSize(d);
+		p_age.add(n_age);
+		p_age.add(t_age);
+		//-------------------------------------
+		p_email.setLayout(new FlowLayout());
+		p_email.setBackground(Color.GRAY);
+		p_email.setPreferredSize(d);
+		p_email.add(n_email);
+		p_email.add(t_email);
+		//-------------------------------------
+		p_south.setBackground(Color.GRAY);
+		p_south.setPreferredSize(d);
+		p_south.add(bt_regist);		
+		
+		/*<Regist 패널 관련 설정>*/
+		setLayout(new FlowLayout());
+		//-------------------------------------
+		add(p_base);
+		//-------------------------------------
+		setSize(500,1000);
+		setVisible(true);
+		setDefaultCloseOperation(EXIT_ON_CLOSE);
+	}
+	public static void main(String[] args) {
+		new Regist();
+	}
+
+}

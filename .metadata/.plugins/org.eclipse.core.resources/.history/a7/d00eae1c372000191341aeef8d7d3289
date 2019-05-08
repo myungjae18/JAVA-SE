@@ -1,0 +1,333 @@
+package messenger.regist;
+import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.FlowLayout;
+import java.awt.Font;
+import java.awt.Graphics;
+import java.awt.Image;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+
+import javax.swing.JButton;
+import javax.swing.JFrame;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.JTextField;
+import javax.swing.border.Border;
+
+import messenger.mainframe.Main;
+import messenger.utils.ImageLoad;
+
+public class Regist extends JFrame{
+	//영역 구분용 패널
+	JPanel p_base, p_north, p_center, p_south, p_name, p_idArea, p_pw, p_nickName, p_birth, p_phone, p_email;
+	JTextField n_name, n_id, n_pw, n_nickName, n_birth, n_phone, n_email; //각 입력창의 설명 텍스트
+	JTextField t_name, t_id, t_pw, t_nickName, t_birth, t_phone, t_email; //각 텍스트 입력 창
+	JButton bt_check, bt_regist; //아이디 중복 확인 버튼과 가입 버튼
+	
+	Main main;
+	ImageLoad imageLoad;
+	Image image;
+	public Regist() {
+		super("회원 가입"); //title
+		
+		/*<이미지 관련 작업>*/
+		imageLoad=new ImageLoad();
+		image=imageLoad.getImage("E:/java_developer/javaSE/Messenger/res/image_rion.jpeg");
+		image=image.getScaledInstance(500, 500, Image.SCALE_SMOOTH);
+		
+		/*<인스턴스 호출>*/
+		p_base=new JPanel(); //패널 전체를 감싸는 패널
+		p_north=new JPanel() {
+			public void paint(Graphics g) {
+				g.drawImage(image, 0, 0, this);
+			}
+		};
+		p_center=new JPanel(); //버튼 부분 외의 모든 것을 담는 패널
+		p_south=new JPanel(); //버튼 부분을 담는 패널
+		p_name=new JPanel();
+		p_idArea=new JPanel();
+		p_pw=new JPanel();
+		p_nickName=new JPanel();
+		p_birth=new JPanel();
+		p_phone=new JPanel();
+		p_email=new JPanel();
+		//-------------------------------------
+		n_name=new JTextField(4) {
+			public void setBorder(Border border) {}
+		};
+		n_id=new JTextField(9) {
+			public void setBorder(Border border) {}
+		};
+		n_pw=new JTextField(4) {
+			public void setBorder(Border border) {}
+		};
+		n_nickName=new JTextField(4) {
+			public void setBorder(Border border) {}
+		};
+		n_birth=new JTextField(4) {
+			public void setBorder(Border border) {}
+		};
+		n_phone=new JTextField(4) {
+			public void setBorder(Border border) {}
+		};
+		n_email=new JTextField(4) {
+			public void setBorder(Border border) {}
+		};
+		//-------------------------------------
+		t_name=new JTextField(13);
+		t_id=new JTextField(13);
+		t_pw=new JTextField(13);
+		t_nickName=new JTextField(13);
+		t_birth=new JTextField(13);
+		t_phone=new JTextField(13);
+		t_email=new JTextField(13);
+		//-------------------------------------
+		bt_check=new JButton("check");
+		bt_regist=new JButton("가입");
+		
+		/*<텍스트 관련 설정>*/
+		n_name.setFont(new Font("", Font.BOLD, 20));
+		n_name.setEditable(false);
+		n_name.setBackground(Color.GRAY);
+		n_name.setSize(30, 30);
+		n_name.setText("이름");
+		//-------------------------------------
+		n_id.setFont(new Font("", Font.BOLD, 20));
+		n_id.setEditable(false);
+		n_id.setBackground(Color.GRAY);
+		n_id.setSize(30, 30);
+		n_id.setText("             id");
+		//-------------------------------------
+		n_pw.setFont(new Font("", Font.BOLD, 20));
+		n_pw.setEditable(false);
+		n_pw.setBackground(Color.GRAY);
+		n_pw.setSize(30, 30);
+		n_pw.setText("pw");
+		//-------------------------------------
+		n_nickName.setFont(new Font("", Font.BOLD, 20));
+		n_nickName.setEditable(false);
+		n_nickName.setBackground(Color.GRAY);
+		n_nickName.setSize(30, 30);
+		n_nickName.setText("별명");
+		//-------------------------------------
+		n_birth.setFont(new Font("", Font.BOLD, 20));
+		n_birth.setEditable(false);
+		n_birth.setBackground(Color.GRAY);
+		n_birth.setSize(30, 30);
+		n_birth.setText("birth");
+		//-------------------------------------
+		n_phone.setFont(new Font("", Font.BOLD, 20));
+		n_phone.setEditable(false);
+		n_phone.setBackground(Color.GRAY);
+		n_phone.setSize(30, 30);
+		n_phone.setText("phone");
+		//-------------------------------------
+		n_email.setFont(new Font("", Font.BOLD, 20));
+		n_email.setEditable(false);
+		n_email.setBackground(Color.GRAY);
+		n_email.setSize(30, 30);
+		n_email.setText("Email");
+		//-------------------------------------
+		t_name.setFont(new Font(null, Font.PLAIN, 20));
+		t_id.setFont(new Font(null, Font.PLAIN, 20));
+		t_pw.setFont(new Font(null, Font.PLAIN, 20));
+		t_nickName.setFont(new Font(null, Font.PLAIN, 20));
+		t_birth.setFont(new Font(null, Font.PLAIN, 20));
+		t_phone.setFont(new Font(null, Font.PLAIN, 20));
+		t_email.setFont(new Font(null, Font.PLAIN, 20));
+		
+		/*<내부 패널들 관련 설정>*/
+		p_base.setLayout(new FlowLayout());
+		p_base.setBackground(Color.GRAY);
+		p_base.setPreferredSize(new Dimension(500, 1000));
+		p_base.add(p_north);
+		p_base.add(p_center, BorderLayout.CENTER);
+		p_base.add(p_south, BorderLayout.SOUTH);
+		//-------------------------------------
+		p_north.setPreferredSize(new Dimension(500, 500));
+		//-------------------------------------
+		p_center.setLayout(new FlowLayout());
+		p_center.setPreferredSize(new Dimension(500, 400));
+		p_center.add(p_name);
+		p_center.add(p_idArea);
+		p_center.add(p_pw);
+		p_center.add(p_nickName);
+		p_center.add(p_birth);
+		p_center.add(p_phone);
+		p_center.add(p_email);
+		p_center.setBackground(Color.GRAY);
+		//-------------------------------------
+		Dimension d=new Dimension(500, 55);
+		//-------------------------------------
+		p_name.setLayout(new FlowLayout());
+		p_name.setBackground(Color.GRAY);
+		p_name.setPreferredSize(d);
+		p_name.add(n_name, BorderLayout.WEST);
+		p_name.add(t_name);
+		//-------------------------------------
+		p_idArea.setLayout(new FlowLayout());
+		p_idArea.setBackground(Color.GRAY);
+		p_idArea.setPreferredSize(d);
+		p_idArea.add(n_id);
+		p_idArea.add(t_id);
+		p_idArea.add(bt_check);
+		//-------------------------------------
+		p_pw.setLayout(new FlowLayout());
+		p_pw.setBackground(Color.GRAY);
+		p_pw.setPreferredSize(d);
+		p_pw.add(n_pw);
+		p_pw.add(t_pw);
+		//-------------------------------------
+		p_nickName.setLayout(new FlowLayout());
+		p_nickName.setBackground(Color.GRAY);
+		p_nickName.setPreferredSize(d);
+		p_nickName.add(n_nickName);
+		p_nickName.add(t_nickName);
+		//-------------------------------------
+		p_birth.setLayout(new FlowLayout());
+		p_birth.setBackground(Color.GRAY);
+		p_birth.setPreferredSize(d);
+		p_birth.add(n_birth);
+		p_birth.add(t_birth);
+		//-------------------------------------
+		p_phone.setLayout(new FlowLayout());
+		p_phone.setBackground(Color.GRAY);
+		p_phone.setPreferredSize(d);
+		p_phone.add(n_phone);
+		p_phone.add(t_phone);
+		//-------------------------------------
+		p_email.setLayout(new FlowLayout());
+		p_email.setBackground(Color.GRAY);
+		p_email.setPreferredSize(d);
+		p_email.add(n_email);
+		p_email.add(t_email);
+		//-------------------------------------
+		p_south.setBackground(Color.GRAY);
+		p_south.setPreferredSize(d);
+		p_south.add(bt_regist);
+		
+		/*<아이디 중복 확인 버튼 기능 구현>*/
+		bt_check.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				checkId();
+			}
+		});
+		
+		/*<가입 버튼 기능 구현>*/
+		bt_regist.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				regist();
+			}
+		});
+		
+		/*<Frame 관련 설정>*/
+		setLayout(new FlowLayout());
+		//-------------------------------------
+		add(p_base);
+		//-------------------------------------
+		setSize(500,1000);
+		setVisible(true);
+		setDefaultCloseOperation(EXIT_ON_CLOSE);
+	}
+	/*<회원 가입 구현 메서드>*/
+	public void regist() {
+		String name=t_name.getText();
+		String id=t_id.getText();
+		String pw=t_pw.getText();
+		String nickName=t_nickName.getText();
+		String birth=t_birth.getText();
+		String phone=t_phone.getText();
+		String email=t_email.getText();
+		
+		if(name.length()==0) {
+			JOptionPane.showMessageDialog(p_center, "이름을 입력해주세요");
+			return;
+		}
+		if(id.length()==0) {
+			JOptionPane.showMessageDialog(p_center, "사용할 아이디를 입력해주세요");
+			return;
+		}
+		if(pw.length()==0) {
+			JOptionPane.showMessageDialog(p_center, "사용할 비밀번호를 입력해주세요");
+			return;
+		}
+		if(nickName.length()==0) {
+			JOptionPane.showMessageDialog(p_center, "사용할 별명을 입력해주세요");
+			return;
+		}
+		if(birth.length()==0) {
+			JOptionPane.showMessageDialog(p_center, "생년월일을 입력해주세요");
+			return;
+		}
+		if(phone.length()==0) {
+			JOptionPane.showMessageDialog(p_center, "핸드폰 번호를 입력해주세요");
+			return;
+		}
+		if(email.length()==0) {
+			JOptionPane.showMessageDialog(p_center, "등록할 이메일을 입력해주세요");
+			return;
+		}
+		
+		//'현재 사용자'의 pc의 db에 접근
+		String sql="insert into members(member_id, name, id, password, nickname, birth, phone, email)";
+		sql+=" values(seq_user.nextval,'"+name+"','"+id+"','"+pw+"','"+nickName+"','"+birth+"','"+phone+"','"+email+"')";
+		System.out.println(sql);
+		PreparedStatement pstmt=null;
+		try {
+			main=new Main();
+			pstmt=main.getCon().prepareStatement(sql);
+			int result=pstmt.executeUpdate(); //DML
+			if(result==0) {
+				JOptionPane.showMessageDialog(p_center, "가입실패");
+			}else {
+				JOptionPane.showMessageDialog(p_center, "가입성공");
+				System.exit(0);
+			}
+		} catch (SQLException s) {
+			s.printStackTrace();
+		}finally {
+			if(pstmt != null) {
+				try {
+					pstmt.close();
+				} catch (SQLException s) {
+					s.printStackTrace();
+				}
+			}
+		}
+	}
+	public void checkId() {
+		String id=t_id.getText();
+		
+		String sql="select id from members where id='"+id;
+		PreparedStatement pstmt=null;
+		ResultSet rs=null;
+		try {
+			main=new Main();
+			pstmt=main.getCon().prepareStatement(sql);
+			rs=pstmt.executeQuery();
+			if(rs.next()) {
+				JOptionPane.showMessageDialog(p_base, "");
+			}
+			
+		} catch (SQLException s) {
+			s.printStackTrace();
+		}finally {
+			if(pstmt != null) {
+				try {
+					pstmt.close();
+				} catch (SQLException s) {
+					s.printStackTrace();
+				}
+			}
+		}
+	}
+	
+	public static void main(String[] args) {
+		new Regist();
+	}
+}

@@ -1,0 +1,196 @@
+package messenger.mainframe;
+
+import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.Image;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+
+import javax.swing.Icon;
+import javax.swing.ImageIcon;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+
+import messenger.addfriend.AddFriendMain;
+import messenger.chatlist.ChatListMain;
+import messenger.chatlist.ChatListPane;
+import messenger.memberlist.MemberListMain;
+import messenger.utils.ImageLoad;
+
+public class MainFrame extends JFrame{
+	JPanel p_north;
+	JPanel p_state;
+	JPanel p_channel;
+	JPanel p_search;
+	JPanel p_south;
+	Image mainIcon, img_person, img_bubble, img_plus, img_alarm, img_option;
+	ImageLoad imageLoad;
+	JLabel lb_person, lb_bubble, lb_plus, lb_alarm, lb_option;
+	Icon icon_person, icon_bubble,icon_plus, icon_alarm, icon_option;
+	JPanel p_person, p_bubble, p_plus, p_alarm, p_option;
+	
+	JPanel[] pages=new JPanel[3];
+	
+	ChatListPane state = new ChatListPane();
+	
+	
+	public MainFrame() {
+		p_north = new JPanel();
+		p_state = new JPanel();
+		p_channel = new JPanel();
+		p_search = new JPanel();
+		p_south = new JPanel();
+		p_person = new JPanel();
+		p_bubble = new JPanel();
+		p_plus = new JPanel();
+		p_alarm = new JPanel();
+		p_option = new JPanel();
+		imageLoad = new ImageLoad();
+		
+		pages[0]= new MemberListMain();
+		pages[1] = new ChatListMain();
+		pages[2] = new AddFriendMain();
+		
+		state = new ChatListPane();
+		p_state.add(state);
+		
+		mainIcon = imageLoad.getImage("E:/java_developer/javascript/res/bird.png");
+		img_person = imageLoad.getImage("E:/java_developer/javascript/res/bird.png");
+		img_person=img_person.getScaledInstance(30, 30, Image.SCALE_SMOOTH); // 이미지 사이즈 조절
+		img_bubble=imageLoad.getImage("E:/java_developer/javascript/res/bird.png");
+		img_bubble=img_bubble.getScaledInstance(30, 30, Image.SCALE_SMOOTH);
+		img_plus=imageLoad.getImage("E:/java_developer/javascript/res/bird.png");
+		img_plus=img_plus.getScaledInstance(30, 30, Image.SCALE_SMOOTH);
+		img_alarm=imageLoad.getImage("E:/java_developer/javascript/res/bird.png");
+		img_alarm=img_alarm.getScaledInstance(35, 35, Image.SCALE_SMOOTH);
+		img_option=imageLoad.getImage("E:/java_developer/javascript/res/bird.png");
+		img_option=img_option.getScaledInstance(30, 30, Image.SCALE_SMOOTH);
+	
+		//------------------------------------------------------------------------------------------------
+		icon_person = new ImageIcon(img_person);
+		lb_person = new JLabel(icon_person);
+		
+		icon_bubble = new ImageIcon(img_bubble);
+		lb_bubble = new JLabel(icon_bubble);
+		
+		icon_plus = new ImageIcon(img_plus);
+		lb_plus = new JLabel(icon_plus);
+		
+		icon_alarm = new ImageIcon(img_alarm);
+		lb_alarm = new JLabel(icon_alarm);
+		
+		icon_option = new ImageIcon(img_option);
+		lb_option = new JLabel(icon_option);
+		
+		
+		
+		
+		//-----------------------------------------------------------------------------------
+		p_north.setPreferredSize(new Dimension(500,100));
+		p_state.setPreferredSize(new Dimension(500,50));
+		p_channel.setPreferredSize(new Dimension(500,50));
+		//p_search.setPreferredSize(new Dimension(500,50));
+		p_south.setPreferredSize(new Dimension(500,660));
+		//-----------------------------------------------------------------------------------
+		p_person.setPreferredSize(new Dimension(90,50));
+		p_bubble.setPreferredSize(new Dimension(90,50));
+		p_plus.setPreferredSize(new Dimension(90,50));
+		p_alarm.setPreferredSize(new Dimension(90,50));
+		p_option.setPreferredSize(new Dimension(90,50));
+		
+		//----------------------------------------------------------------------------------삭제
+		p_north.setBackground(Color.black);
+		p_state.setBackground(Color.red);
+		p_channel.setBackground(Color.yellow);
+		p_search.setBackground(Color.green);
+		p_south.setBackground(Color.blue);
+		p_person.setBackground(Color.CYAN);
+		p_bubble.setBackground(Color.GRAY);
+		p_plus.setBackground(Color.pink);
+		p_alarm.setBackground(Color.pink);
+		p_option.setBackground(Color.pink);
+		//----------------------------------------------------------------------------------삭제
+		
+		p_north.setLayout(new BorderLayout());
+		
+		p_person.add(lb_person);
+		p_bubble.add(lb_bubble);
+		p_plus.add(lb_plus);
+		p_alarm.add(lb_alarm);
+		p_option.add(lb_option);
+		
+		
+		p_channel.add(p_person);
+		p_channel.add(p_bubble);
+		p_channel.add(p_plus);
+		p_channel.add(p_alarm);
+		p_channel.add(p_option);
+		
+		p_south.add(pages[0]);
+		p_south.add(pages[1]);
+		p_south.add(pages[2]);
+		//p_change.add(jimage,BorderLayout.WEST); // 사람이미지 부착
+		//p_change.prepareImage(image, 20, 20, null);
+		//p_change.imageUpdate(img, infoflags, x, y, w, h);
+		
+		p_north.add(p_state,BorderLayout.NORTH);			
+		p_north.add(p_channel);
+		add(p_north,BorderLayout.NORTH);
+		//add(p_search,BorderLayout.CENTER);
+		
+		//add(p_south,BorderLayout.SOUTH);
+		add(p_south);
+		
+		//add(chatList,BorderLayout.SOUTH);
+		//add(memberList,BorderLayout.SOUTH);
+		//add(addFriend,BorderLayout.SOUTH);
+
+		//----------------------------------------------------------------------------------
+		//리스너
+		lb_person.addMouseListener(new MouseAdapter() {
+			public void mouseClicked(MouseEvent e) {
+				System.out.println("친구 목록 눌렀니?");
+				chageChannel(0);
+			}
+		});
+		lb_bubble.addMouseListener(new MouseAdapter() {
+			public void mouseClicked(MouseEvent e) {
+				System.out.println("채팅 목록 눌렀니?");				
+				chageChannel(1);
+			}
+		});
+		lb_plus.addMouseListener(new MouseAdapter() {
+			public void mouseClicked(MouseEvent e) {
+				System.out.println("플러스 목록 눌렀니?");
+				chageChannel(2);
+			}
+		});
+		
+		setIconImage(mainIcon);//제일위에 메인 아이콘
+
+		setSize(500, 800);
+		setVisible(true);
+		setDefaultCloseOperation(EXIT_ON_CLOSE);
+	}
+/*
+	public void paint(Graphics g) {
+		g.drawImage(image, 0, 0, 30, 30, this);
+	}*/
+	public void chageChannel(int page) {
+		for(int i=0;i<3;i++) {
+			if(i==page) {
+				pages[i].setVisible(true);
+			}else {
+				pages[i].setVisible(false);
+			}
+		}
+	}
+	
+	public static void main(String[] args) {
+		new MainFrame();
+
+	}
+
+}

@@ -1,0 +1,8 @@
+path : 일반 파일을 대상으로 한 환경 경로 변수
+classpath : 클래스 파일을 대상으로 한 환경 경로 변수...
+
+java 패키지명....
+
+myproject란 이름으로 project만들기
+src - machine/Car.java
+        use/UseCar.java

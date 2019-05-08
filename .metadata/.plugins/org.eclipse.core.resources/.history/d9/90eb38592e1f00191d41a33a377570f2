@@ -1,0 +1,101 @@
+package messenger.login;
+
+import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.FlowLayout;
+import java.awt.Font;
+import java.awt.Graphics;
+import java.awt.Image;
+
+import javax.swing.JButton;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.JTextField;
+
+import messenger.utils.ImageLoad;
+
+public class Login extends JPanel{
+	JPanel p_north, p_center, p_idArea, p_pwArea, p_south; //영역 구분을 위한 패널
+	JButton bt_accept, bt_regist; //로그인 확인 버튼과 회원 가입 버튼
+	JTextField n_id, n_pw; //아이디와 비밀번호를 표시할 텍스트
+	JTextField t_id, t_pw; //아이디와 비밀번호를 입력하게 될 입력창
+	Image image;
+	
+	ImageLoad imageLoad;
+	public Login() {
+		imageLoad=new ImageLoad();
+		image=imageLoad.getImage("E:/java_developer/javaSE/Messenger/lib/image_talk.jpg");
+		image=image.getScaledInstance(500, 390, Image.SCALE_SMOOTH);
+		//-------------------------------------
+		p_north=new JPanel() {
+			public void paint(Graphics g) {
+				g.drawImage(image, 0, 0, this);
+			}
+		};
+		p_center=new JPanel();
+		p_south=new JPanel();
+		p_idArea=new JPanel();
+		p_pwArea=new  JPanel();
+		//-------------------------------------
+		n_id=new JTextField(2);
+		n_pw=new JTextField(2);
+		//-------------------------------------
+		t_id=new JTextField(15);
+		t_pw=new JTextField(15);
+		//-------------------------------------
+		bt_accept=new JButton("확인");
+		bt_regist=new JButton("가입");
+		
+		/*<텍스트 관련 설정>*/
+		n_id.setFont(new Font("", Font.BOLD, 20));
+		n_id.setEditable(false);
+		n_id.setSize(30, 30);
+		n_id.setText("id");
+		//-------------------------------------
+		n_pw.setFont(new Font("", Font.BOLD, 20));
+		n_pw.setEditable(false);
+		n_pw.setSize(30, 30);
+		n_pw.setText("pw");
+		//-------------------------------------
+		t_id.setFont(new Font("", Font.BOLD, 20));
+		t_id.setSize(30, 200);
+		//-------------------------------------
+		t_pw.setFont(new Font("", Font.BOLD, 20));
+		t_pw.setSize(30, 200);		
+		
+		/*<내부 패널들 관련 설정>*/
+		p_north.setPreferredSize(new Dimension(500, 400));		
+		//-------------------------------------
+		p_center.setPreferredSize(new Dimension(500, 400));
+		p_center.setBackground(Color.WHITE);
+		p_center.add(p_idArea);
+		p_center.add(p_pwArea, BorderLayout.SOUTH);
+		//-------------------------------------
+		p_idArea.setPreferredSize(new Dimension(500, 40));
+		p_idArea.setBackground(Color.WHITE);
+		p_idArea.add(n_id);
+		p_idArea.add(t_id);
+		//-------------------------------------
+		p_pwArea.setPreferredSize(new Dimension(500, 350));
+		p_pwArea.setBackground(Color.WHITE);
+		p_pwArea.add(n_pw);
+		p_pwArea.add(t_pw);
+		//-------------------------------------
+		p_south.setPreferredSize(new Dimension(500, 100));
+		p_south.setBackground(Color.WHITE);
+		p_south.add(bt_accept);
+		p_south.add(bt_regist);
+		
+		/*<Login 패널 관련 설정>*/
+		setLayout(new FlowLayout());
+		//-------------------------------------
+		add(p_north);
+		add(p_center, BorderLayout.CENTER);
+		add(p_south, BorderLayout.SOUTH);		
+		//-------------------------------------
+		setBackground(Color.WHITE);
+		setSize(500, 800);
+		setVisible(true);		
+	}
+}

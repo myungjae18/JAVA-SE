@@ -1,0 +1,2 @@
+main치고 control space 메인 메서드 생성
+콘트롤 알트 아래 키 = 줄 복사

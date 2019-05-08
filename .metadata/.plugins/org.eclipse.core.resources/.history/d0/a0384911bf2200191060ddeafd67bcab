@@ -1,0 +1,135 @@
+package messenger.server;
+
+import java.awt.BorderLayout;
+import java.awt.Font;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.io.IOException;
+import java.net.ServerSocket;
+import java.net.Socket;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.Vector;
+
+import javax.swing.JButton;
+import javax.swing.JFrame;
+import javax.swing.JPanel;
+import javax.swing.JScrollBar;
+import javax.swing.JScrollPane;
+import javax.swing.JTextArea;
+
+import messenger.db.ConnectionManager;
+
+
+
+public class MultiServer extends JFrame {
+	JPanel p_north;
+	JButton bt;
+	JTextArea area;
+	JScrollPane scroll;
+	JScrollBar bar;
+	ServerSocket server;
+	int port = 8888;
+
+	Thread serverThread;
+	String order;
+
+	Vector<ServerThread> list=new Vector<ServerThread>();
+	
+	private Connection con;
+	ConnectionManager connectionManager;
+	
+
+	public MultiServer() {
+		p_north = new JPanel();
+		bt = new JButton("서버가동");
+		area = new JTextArea();
+		scroll = new JScrollPane(area);
+		connectionManager = new ConnectionManager();
+		
+
+		// 쓰레드 생성 및 재정의!!
+		serverThread = new Thread() {
+			public void run() {
+				runServer();
+			}
+		};
+		p_north.add(bt);
+		this.add(scroll);
+		this.add(p_north, BorderLayout.NORTH);
+
+		area.setFont(new Font("돋음", Font.BOLD, 15));
+
+		bt.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				// 서버 가동
+				serverThread.start();
+				//접속하기
+				con=connectionManager.getConnection();
+				selectAll();
+			}
+		});
+		
+
+		this.setSize(400, 500);
+		this.setVisible(true);
+		this.setDefaultCloseOperation(EXIT_ON_CLOSE);
+	}
+
+	public void runServer() {
+		try {
+			server = new ServerSocket(port);
+			area.append("서버 객체 생성\n");
+
+			while (true) {
+				Socket client = server.accept();
+				String ip = client.getInetAddress().getHostAddress();
+				area.append(ip + " 님 접속\n");
+				ServerThread st=new ServerThread(this, client);
+				st.start();
+				list.add(st);
+				area.append("현재"+list.size()+"명 접속중");
+			}
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	public void selectAll() {
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		
+		String sql = order;
+		try {
+			pstmt = con.prepareStatement(sql);
+			rs = pstmt.executeQuery();
+			while (rs.next()) {
+				System.out.println(rs);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}finally {
+			if (rs != null) {
+				try {
+					rs.close();
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
+			}
+			if(pstmt != null) {
+				try {
+					pstmt.close();
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
+			}
+		}
+	}
+
+	public static void main(String[] args) {
+		new MultiServer();
+	}
+
+}

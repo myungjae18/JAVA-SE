@@ -1,0 +1,24 @@
+/*
+ * 데이터베이스 접속과 관련된 중복된 업무를 이 클래스로 정의하여
+ * */
+package messenger.db;
+
+public class ConnectionManager {
+	String driver="oracle.jdbc.driver.OracleDriver";
+	String url="jdbc:oracle:thin:@localhost:1521:XE";
+	String user="lee";
+	String password="1234";
+	
+	public String getDriver() {
+		return driver;
+	}
+	public String getUrl() {
+		return url;
+	}
+	public String getUser() {
+		return user;
+	}
+	public String getPassword() {
+		return password;
+	}
+}
